@@ -1,5 +1,6 @@
 from app import kontrollera_stad
 
+
 # Tester om en stad finn i listan
 def test_kontrollera_stad():
     assert kontrollera_stad("Stockholm") is True
