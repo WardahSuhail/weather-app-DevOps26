@@ -1,26 +1,57 @@
+from unittest.mock import Mock, patch
+
 import requests
+import pytest
 
-# Adressen till väder-API
-url_for = "https://api.open-meteo.com/v1/forecast"
+from weather_api import hamta_vader
 
-# Väljer vilken väderinformation vi vill ha
-parametrar = {
-    "latitude": 59.33,
-    "longitude": 18.07,
-    "current": "temperature_2m,wind_speed_10m",
-    "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
-    "timezone": "auto",
-    "forecast_days": 3,
+
+# Rensar cache före och efter varje test
+@pytest.fixture(autouse=True)
+def clear_cache():
+    hamta_vader.cache_clear()
+    yield
+    hamta_vader.cache_clear()
+
+
+# Fejkad väderdata.
+DATA = {
+    "current": {
+        "temperature_2m": 12.5,
+        "wind_speed_10m": 8.0,
+    },
+    "daily": {
+        "time": ["2026-11-07", "2026-11-08", "2026-11-09"],
+        "temperature_2m_max": [13.0, 14.0, 12.0],
+        "temperature_2m_min": [5.0, 6.0, 4.0],
+        "precipitation_sum": [0.0, 2.5, 1.0],
+    },
 }
 
-# Hämtar väderinformation från API
-svar = requests.get(url_for, params=parametrar, timeout=5)
 
-# Kontrollerar om API-anropet gick bra
-svar.raise_for_status()
+# Testar om väderinformationen hämtas rätt
+@patch("weather_api.requests.get")
+def test_hamta_vader(mock_get):
+    mock_get.return_value = Mock(json=lambda: DATA)
 
-# Gör om svar till Pyton data
-data = svar.json()
+    resultat = hamta_vader(59.33, 18.07)
+    assert resultat == DATA
 
-# Skriver ut svaret
-print(data)
+
+# Testar om timeout-fel fungerar
+@patch("weather_api.requests.get")
+def test_hamta_vader_timeout(mock_get):
+    mock_get.side_effect = requests.Timeout
+
+    with pytest.raises(RuntimeError):
+        hamta_vader(59.33, 18.07)
+
+
+# Testar om HTTP-fel fungerar
+@patch("weather_api.requests.get")
+def test_hamta_vader_http_error(mock_get):
+    mock_get.return_value = Mock()
+    mock_get.return_value.raise_for_status.side_effect = requests.HTTPError
+
+    with pytest.raises(RuntimeError):
+        hamta_vader(59.33, 18.07)

@@ -6,6 +6,14 @@ import requests
 from weather_api import hamta_vader, skapa_vaderlista
 
 
+# Rensar cache före och efter varje test
+@pytest.fixture(autouse=True)
+def clear_cache():
+    hamta_vader.cache_clear()
+    yield
+    hamta_vader.cache_clear()
+
+
 # Byter ut API anroper mot ett test
 @patch("weather_api.requests.get")
 def test_hamta_vader(mock_get):

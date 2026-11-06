@@ -7,9 +7,11 @@ from weather_api import hamta_vader, skapa_vaderlista
 # Skapar Flask-app
 app = Flask(__name__)
 
+
 @app.template_filter("temp")
 def format_temp(value):
     return f"{value:.1f}".replace(".", ",") + " °C"
+
 
 # Decorator som bestämmer vad som visas på startsidan
 @app.route("/")
@@ -33,6 +35,7 @@ stader = {
 def kontrollera_stad(stad):
     return stad in stader
 
+
 # Hämtar väderprognosen för vald stad
 @app.route("/weather")
 def visa_vader():
@@ -43,8 +46,7 @@ def visa_vader():
     # Kontrollerar om staden finns
     if not kontrollera_stad(stad):
         return render_template(
-            "fel.html",
-            fel="The city could not be found. Please choose another city."
+            "fel.html", fel="The city could not be found. Please choose another city."
         ), 400
 
     # Hämtar stadens koordinater
@@ -52,10 +54,7 @@ def visa_vader():
 
     try:
         # Hämtar väder från API
-        data = hamta_vader(
-            koordinater["latitud"],
-            koordinater["longitud"]
-        )
+        data = hamta_vader(koordinater["latitud"], koordinater["longitud"])
 
         # Hämtar current temperatur och vind
         temperatur = data["current"]["temperature_2m"]
@@ -66,17 +65,13 @@ def visa_vader():
 
         # Visar väderprognosen
         return render_template(
-            "vader.html",
-            stad=stad,
-            temperatur=temperatur,
-            vind=vind,
-            dagar=dagar
+            "vader.html", stad=stad, temperatur=temperatur, vind=vind, dagar=dagar
         )
 
     except RuntimeError:
         return render_template(
             "fel.html",
-            fel="The weather station is having a storm. Please try again later!"
+            fel="The weather station is having a storm. Please try again later!",
         ), 503
 
 

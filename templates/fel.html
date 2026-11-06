@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card text-center">
+    <div class="card-body">
+        <h1 class="card-title">Something went wrong.</h1>
+
+        <p class="card-text">{{ fel }}</p>
+
+        <a href="{{ url_for('hello') }}" class="btn btn-secondary">
+            Back to homepage
+        </a>
+    </div>
+</div>
+
+{% endblock %}

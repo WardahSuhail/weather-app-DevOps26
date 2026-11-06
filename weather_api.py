@@ -1,9 +1,13 @@
+from functools import lru_cache
 import requests
+
 
 # Adressen till väder-API
 url_for = "https://api.open-meteo.com/v1/forecast"
 
 
+# Sparar väderinformationen så att API inte behöver anropas igen
+@lru_cache(maxsize=32)
 def hamta_vader(latitude, longitude):
     # Väljer vilken väderinformation vi vill ha
     parametrar = {
