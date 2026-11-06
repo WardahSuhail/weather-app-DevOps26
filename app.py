@@ -1,6 +1,6 @@
 """Main module för weather applikation"""
 
-from flask import Flask
+from flask import Flask, render_template
 
 # Skapar Flask-app
 app = Flask(__name__)
@@ -43,7 +43,7 @@ def inte_hittad(fel):
 def serverfel(fel):
     return render_template(
         "fel.html", fel="Något gick fel på servern. Vänligen försöka igen senare."
-    ), 503
+    ), 500
 
 
 # Startar webserver om man kör app.py i terminalen.

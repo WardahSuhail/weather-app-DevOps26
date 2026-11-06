@@ -1,7 +1,7 @@
 import requests
 
 # Adressen till väder-API
-url = "https://api.open-meteo.com/v1/forecast"
+url_for = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&current=temperature_2m,wind_speed_10m&timezone=auto&forecast_days=3"
 
 # Väljer vilken väderinformation vi vill ha
 parametrar = {
@@ -14,7 +14,7 @@ parametrar = {
 }
 
 # Hämtar väderinformation från API
-svar = requests.get(url, params=parametrar, timeout=5)
+svar = requests.get(url_for, params=parametrar, timeout=5)
 
 # Kontrollerar om API-anropet gick bra
 svar.raise_for_status()
