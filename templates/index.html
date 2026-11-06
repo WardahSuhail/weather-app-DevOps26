@@ -1,0 +1,51 @@
+<!-- Bootstrap hämtades från www.bootstrap-cheatsheet.themeselection.com -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Rubrik -->
+<h1 class="text-center mb-4">
+    Weather, weather on the wall, where is the warmest of all?
+</h1>
+
+<!-- Card -->
+<div class="card">
+
+    <div class="card-header">
+        Weather forecast
+    </div>
+
+    <div class="card-body">
+
+        <h5 class="card-title">Choose a city</h5>
+
+        <p class="card-text">
+            Select a city to see the weather forecast.
+        </p>
+
+        <!-- Form -->
+        <form action="{{ url_for('visa_vader') }}" method="get">
+
+            <label for="stad" class="form-label">
+                Select city:
+            </label>
+
+            <select name="stad" id="stad" class="form-select mb-3">
+
+                {% for stad in stader %}
+                    <option value="{{ stad }}">{{ stad }}</option>
+                {% endfor %}
+
+            </select>
+
+            <button type="submit" class="btn btn-outline-secondary">
+                Show weather
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

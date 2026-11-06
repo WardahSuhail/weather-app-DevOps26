@@ -1,17 +1,22 @@
 """Main module för weather applikation"""
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from weather_api import hamta_vader, skapa_vaderlista
+
 
 # Skapar Flask-app
 app = Flask(__name__)
 
+@app.template_filter("temp")
+def format_temp(value):
+    return f"{value:.1f}".replace(".", ",") + " °C"
 
 # Decorator som bestämmer vad som visas på startsidan
 @app.route("/")
 
 # En funktion som returera texten Weather App!
 def hello():
-    return "Weather App!"
+    return render_template("index.html", stader=stader)
 
 
 # En dictionary för städer med deras koordinater
@@ -28,13 +33,59 @@ stader = {
 def kontrollera_stad(stad):
     return stad in stader
 
+# Hämtar väderprognosen för vald stad
+@app.route("/weather")
+def visa_vader():
+
+    # Hämtar stadens namn från URL
+    stad = request.args.get("stad")
+
+    # Kontrollerar om staden finns
+    if not kontrollera_stad(stad):
+        return render_template(
+            "fel.html",
+            fel="The city could not be found. Please choose another city."
+        ), 400
+
+    # Hämtar stadens koordinater
+    koordinater = stader[stad]
+
+    try:
+        # Hämtar väder från API
+        data = hamta_vader(
+            koordinater["latitud"],
+            koordinater["longitud"]
+        )
+
+        # Hämtar current temperatur och vind
+        temperatur = data["current"]["temperature_2m"]
+        vind = data["current"]["wind_speed_10m"]
+
+        # Skapar en lista med tre dagars väder
+        dagar = skapa_vaderlista(data)
+
+        # Visar väderprognosen
+        return render_template(
+            "vader.html",
+            stad=stad,
+            temperatur=temperatur,
+            vind=vind,
+            dagar=dagar
+        )
+
+    except RuntimeError:
+        return render_template(
+            "fel.html",
+            fel="The weather station is having a storm. Please try again later!"
+        ), 503
+
 
 # Visar ett fel meddelande om felet är från clienten
 @app.errorhandler(404)
 def inte_hittad(fel):
     return render_template(
         "fel.html",
-        fel="Sidan kunde inte hittas. Kontrollera addressen.",
+        fel="Bad weather.",
     ), 404
 
 
@@ -42,7 +93,8 @@ def inte_hittad(fel):
 @app.errorhandler(500)
 def serverfel(fel):
     return render_template(
-        "fel.html", fel="Något gick fel på servern. Vänligen försöka igen senare."
+        "fel.html",
+        fel="The weather station is having a storm. Please try again later!.",
     ), 500
 
 

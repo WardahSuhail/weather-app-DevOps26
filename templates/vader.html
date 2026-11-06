@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Heading -->
+<h1 class="text-center mb-4">
+    Weather forecast for {{ stad }}
+</h1>
+
+<!-- Current weather -->
+<div class="card mb-4">
+    <div class="card-body">
+
+        <h2 class="card-title">Current weather</h2>
+
+        <p>Temperature: {{ temperatur|temp }}</p>
+
+        <p>Wind speed: {{ vind }} km/h</p>
+
+    </div>
+</div>
+
+<!-- Three-day forecast -->
+<h2 class="mb-3">Three-day forecast</h2>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Maximum temperature</th>
+            <th>Minimum temperature</th>
+            <th>Precipitation</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if dagar %}
+            {% for dag in dagar %}
+                <tr>
+                    <td>{{ dag.datum }}</td>
+                    <td>{{ dag.max_temp|temp }}</td>
+                    <td>{{ dag.min_temp|temp }}</td>
+                    <td>{{ dag.nederbord }} mm</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+              <tr>
+            <td colspan="4">No weather forecast available.</td>
+        </tr>
+    {% endif %}   
+</tbody>
+
+</table>
+
+<!-- Back button -->
+<a href="{{ url_for('hello') }}" class="btn btn-secondary">
+    Back to homepage
+</a>
+
+{% endblock %}

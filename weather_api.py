@@ -1,7 +1,7 @@
 import requests
 
 # Adressen till väder-API
-url_for = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&current=temperature_2m,wind_speed_10m&timezone=auto&forecast_days=3"
+url_for = "https://api.open-meteo.com/v1/forecast"
 
 
 def hamta_vader(latitude, longitude):
