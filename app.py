@@ -29,6 +29,23 @@ def kontrollera_stad(stad):
     return stad in stader
 
 
+# Visar ett fel meddelande om felet är från clienten
+@app.errorhandler(404)
+def inte_hittad(fel):
+    return render_template(
+        "fel.html",
+        fel="Sidan kunde inte hittas. Kontrollera addressen.",
+    ), 404
+
+
+# Visar ett felmeddelande om servern får ett fel
+@app.errorhandler(500)
+def serverfel(fel):
+    return render_template(
+        "fel.html", fel="Något gick fel på servern. Vänligen försöka igen senare."
+    ), 503
+
+
 # Startar webserver om man kör app.py i terminalen.
 if __name__ == "__main__":
     app.run(debug=True)
