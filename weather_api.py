@@ -1,8 +1,8 @@
 """Module för att hämta och hantera väderinformation"""
 
 from functools import lru_cache
-import requests
 
+import requests
 
 # ================================================
 # 1. Adress till väder-API

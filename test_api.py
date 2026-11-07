@@ -1,7 +1,7 @@
 from unittest.mock import Mock, patch
 
-import requests
 import pytest
+import requests
 
 from weather_api import hamta_vader
 

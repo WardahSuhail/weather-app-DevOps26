@@ -1,8 +1,8 @@
 """Main module för weather applikation"""
 
 from flask import Flask, render_template, request
-from weather_api import hamta_vader, skapa_vaderlista
 
+from weather_api import hamta_vader, skapa_vaderlista
 
 # ==================================
 # 1. Skapar Flask-appen
