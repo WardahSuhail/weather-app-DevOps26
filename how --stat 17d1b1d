@@ -1,0 +1,14 @@
+[33mf2b3c92[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m  Lade till cache och uppdaterade tester
+[33m2c18cea[m  Byggde sidorna: bas-mall, startsida och prognossida
+[33m3be8f07[m Tillagd test för att skapa väder listan
+[33mca297ec[m tillagd egna felsidor för 404 och serverfel
+[33m17d1b1d[m Lägg till tester med mockning.
+[33ma05e943[m Lägg till funktion för att hämta väder från API i en seperat module: weather_api.py
+[33mdd5177a[m Körde test för att hämta Open-Meteo APIs parametrar
+[33mf959e07[m Lägg till koordinater för Sveriges fem städer
+[33ma260e32[m En funktion skapades i app.py för att kontrllera om staden finns i listan.
+[33m51d4a75[m Lägg till test för att kontrollera om städer finns i listan.
+[33mafa54b0[m Lägg till första testet
+[33m7fafae5[m Merge remote-tracking branch 'origin/main'
+[33m3adecd3[m Första test för applikation
+[33m9b62260[m Initial commit

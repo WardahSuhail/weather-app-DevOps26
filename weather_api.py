@@ -1,9 +1,18 @@
+"""Module för att hämta och hantera väderinformation"""
+
 from functools import lru_cache
 import requests
 
 
-# Adressen till väder-API
+# ================================================
+# 1. Adress till väder-API
+# ================================================
+
 url_for = "https://api.open-meteo.com/v1/forecast"
+
+# ====================================
+# 2. Hämtar väderinformation från API
+# ====================================
 
 
 # Sparar väderinformationen så att API inte behöver anropas igen
@@ -34,7 +43,11 @@ def hamta_vader(latitude, longitude):
         raise RuntimeError("Kunde inte hämta väderinformationen")
 
 
-# Tar emot informationen och gör en enklare lista av den
+# =====================================
+# 3. Skapar en lista med väderprognosen
+# =====================================
+
+
 def skapa_vaderlista(data):
     # Hämtar informationen för dagar
     daglig_vader = data["daily"]
