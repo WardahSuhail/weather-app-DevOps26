@@ -3,25 +3,18 @@
 import pandas as pd
 import plotly.express as px
 from flask import Flask, render_template, request
+
+from functions.stader import kontrollera_stad, stader
 from weather_api import hamta_vader, skapa_vaderlista
 
-
 # ==================================
-# 1. Skapar Flask-appen
+#       Skapar Flask-appen
 # ==================================
 app = Flask(__name__)
 
 
 # ==================================
-# 2. Filter för temperatur
-# ==================================
-@app.template_filter("temp")
-def format_temp(value):
-    return f"{value:.1f}".replace(".", ",") + " °C"
-
-
-# ==================================
-# 4. Startsida
+#            Startsida
 # ==================================
 @app.route("/")
 
@@ -30,26 +23,19 @@ def hello():
     return render_template("index.html", stader=stader)
 
 
-# ===============================================
-# En dictionary för städer med deras koordinater
-# ===============================================
-stader = {
-    "Stockholm": {"latitud": 59.33, "longitud": 18.07},
-    "Göteborg": {"latitud": 57.71, "longitud": 11.97},
-    "Malmö": {"latitud": 55.61, "longitud": 13.00},
-    "Umeå": {"latitud": 63.83, "longitud": 20.26},
-    "Kiruna": {"latitud": 67.86, "longitud": 20.23},
-}
+# ==================================
+# Filter för temperatur
+# ==================================
+@app.template_filter("temp")
+def format_temp(value):
+    return f"{value:.1f}".replace(".", ",") + " °C"
 
 
 # ======================================
-# Kontrollerar om staden finns i listan
-# ======================================
-def kontrollera_stad(stad):
-    return stad in stader
-
-
 # Hämtar väderprognosen för vald stad
+# ======================================
+
+
 @app.route("/weather")
 def visa_vader():
 
@@ -84,8 +70,10 @@ def visa_vader():
                 "Min temperatur": [dag["min_temp"] for dag in dagar],
             }
         )
-
+        # ======================================
         # Skapar ett linjediagram med Plotly
+        # ======================================
+
         fig1 = px.line(
             diagram_data,
             x="Datum",
@@ -119,7 +107,7 @@ def visa_vader():
 
 
 # ==================================
-# 6. Felhantering
+#           Felhantering
 # ==================================
 # Visar ett fel meddelande om felet är från clienten
 @app.errorhandler(404)
@@ -140,7 +128,7 @@ def serverfel(fel):
 
 
 # ==================================
-# 7. Startar webbservern
+#       Startar webbservern
 # ==================================
 # Startar webserver om man kör app.py i terminalen.
 if __name__ == "__main__":

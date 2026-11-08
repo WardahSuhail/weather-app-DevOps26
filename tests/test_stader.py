@@ -1,4 +1,4 @@
-from app import kontrollera_stad
+from functions.stader import kontrollera_stad
 
 
 # Tester om en stad finn i listan
