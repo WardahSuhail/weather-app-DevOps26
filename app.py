@@ -1,8 +1,10 @@
 """Main module för weather applikation"""
 
+import pandas as pd
+import plotly.express as px
 from flask import Flask, render_template, request
-
 from weather_api import hamta_vader, skapa_vaderlista
+
 
 # ==================================
 # 1. Skapar Flask-appen
@@ -74,9 +76,39 @@ def visa_vader():
         # Skapar en lista med tre dagars väder
         dagar = skapa_vaderlista(data)
 
+        # Skapar en DataFrame med väderprognosen
+        diagram_data = pd.DataFrame(
+            {
+                "Datum": [dag["datum"] for dag in dagar],
+                "Max temperatur": [dag["max_temp"] for dag in dagar],
+                "Min temperatur": [dag["min_temp"] for dag in dagar],
+            }
+        )
+
+        # Skapar ett linjediagram med Plotly
+        fig1 = px.line(
+            diagram_data,
+            x="Datum",
+            y=["Max temperatur", "Min temperatur"],
+            title="Temperature forecast over three days",
+            labels={
+                "value": "Temperature (°C)",
+                "variable": "Temperature",
+            },
+            markers=True,
+        )
+
+        # Gör diagrammet till HTML
+        diagram1 = fig1.to_html(full_html=False)
+
         # Visar väderprognosen
         return render_template(
-            "vader.html", stad=stad, temperatur=temperatur, vind=vind, dagar=dagar
+            "vader.html",
+            stad=stad,
+            temperatur=temperatur,
+            vind=vind,
+            dagar=dagar,
+            diagram1=diagram1,
         )
 
     except RuntimeError:

@@ -13,6 +13,7 @@ En webbapplikation som visar väderprognoser för fem svenska städer. Applikati
 - Python 3.10+
 - Flask
 - Requests
+- Pandas
 - Plotly
 - Jinja2
 - Pytest
@@ -124,11 +125,11 @@ Open-Meteo ger väderinformation för de valda städerna.
 
 ### Frågor och svar
 
-- 1. Varför mockar du anropen mot API i dina tester, och vad skulle hända om du inte gjorde det?
+1. Varför mockar du anropen mot API i dina tester, och vad skulle hända om du inte gjorde det?
 
-- Jag mockar API anropen för att tersterna inte ska behöva hämta riktig information från internet. Istället använder jag testdata för att kontrollera att min kod fungerar. I tests/test_api.py använder jag @patch för att använda min test istället för riktiga API anrop.
+Jag mockar API anropen för att tersterna inte ska behöva hämta riktig information från internet. Istället använder jag testdata för att kontrollera att min kod fungerar. I tests/test_api.py använder jag @patch för att använda min test istället för riktiga API anrop.
 
-- Exempel från tests/test_api.py:
+Exempel från tests/test_api.py:
 
 ```python
 @patch("weather_api.requests.get")
@@ -137,13 +138,13 @@ def test_hamta_vader(mock_get):
     resultat = hamta_vader(59.33, 18.07)
     assert resultat == DATA
 ```
-- Om jag inte mockade anropen, skulle testerna behöva internet och API för att fungera. Och om ibland API inte fungerade kunde testerna också misslyckas.
+Om jag inte mockade anropen, skulle testerna behöva internet och API för att fungera. Och om ibland API inte fungerade kunde testerna också misslyckas.
 
-- 2. Vad gör timeout och raise_for_status(), och varför behövs de?
+2. Vad gör timeout och raise_for_status(), och varför behövs de?
 
-- Jag använder timeout=5 i funktionen hamta_vader() i weather_api.py för att programmet inte ska vänta för länge på svar från API. raise_for_status() kontrollerar om API-anropet har fått ett HTTP-fel. Jag hanterar också fel från API och visar ett felmeddelande i appen i stället för att den kraschar.
+Jag använder timeout=5 i funktionen hamta_vader() i weather_api.py för att programmet inte ska vänta för länge på svar från API. raise_for_status() kontrollerar om API-anropet har fått ett HTTP-fel. Jag hanterar också fel från API och visar ett felmeddelande i appen i stället för att den kraschar.
 
-- Exempel från weather_api.py:
+Exempel från weather_api.py:
 
 ```python
 svar = requests.get(url_for, params=parametrar, timeout=5)
@@ -151,11 +152,11 @@ svar.raise_for_status()
 return svar.json()
 ```
 
-- 3. Hur fungerar mallarv i Jinja2? Förklara med exempel från dina egna mallar.
+3. Hur fungerar mallarv i Jinja2? Förklara med exempel från dina egna mallar.
 
-- Mallarv betyder att flera sidor kan använda samma grundmall. I mitt projekt är base.html grundmallen. index.html och vader.html använder den med extends och lägger in sitt eget innehåll i blocket content. På så sätt behöver jag inte skriva samma HTML-kod på varje sida.
+Mallarv betyder att flera sidor kan använda samma grundmall. I mitt projekt är base.html grundmallen. index.html och vader.html använder den med extends och lägger in sitt eget innehåll i blocket content. På så sätt behöver jag inte skriva samma HTML-kod på varje sida.
 
-- Exempel från base.html:
+Exempel från base.html:
 
 ```html
 {% block content %}
@@ -170,9 +171,9 @@ Exempel från index.html:
 {% endblock %}
 ```
 
-- 4. Vad är en fixture, och vilken använder du?
+4. Vad är en fixture, och vilken använder du?
 
-- En fixture är en funktion som förbereder något som behövs när man kör tester. I mina tester använder jag en fixture som heter clear_cache. Den rensar cachen före och efter varje test så att gamla väderdata inte påverkar testresultaten.
+En fixture är en funktion som förbereder något som behövs när man kör tester. I mina tester använder jag en fixture som heter clear_cache. Den rensar cachen före och efter varje test så att gamla väderdata inte påverkar testresultaten.
 
 Exempel från mina testfil:
 
@@ -195,4 +196,4 @@ Följande källor har använts under utvecklingen av projektet:
 - [Git-kommandon (PDF)](docs/git-kommandon.pdf): kursmaterial för Git-kommandon.
 
 
-## Tack för du använder vår app!
+## Tack för du använder app!

@@ -9,4 +9,4 @@ def test_hello():
 
     # Ser om sidan fungerar och visar rätt text.
     assert svar.status_code == 200
-    assert b"Weather, weather on the wall" in svar.data
+    assert b"How's the weather today?" in svar.data

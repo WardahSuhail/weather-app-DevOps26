@@ -7,6 +7,8 @@
     Weather forecast for {{ stad }}
 </h1>
 
+
+
 <!-- Current weather -->
 <div class="card mb-4">
     <div class="card-body">
@@ -20,8 +22,43 @@
     </div>
 </div>
 
-<!-- Three-day forecast -->
-<h2 class="mb-3">Three-day forecast</h2>
+
+
+<!-- Overview cards -->
+<div class="row mb-4">
+
+    {% for dag in dagar %}
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+
+                <h5>
+                    {# Visar namnet på rätt prognosdag #}
+                    {% if loop.index == 1 %}
+                        Today
+                    {% elif loop.index == 2 %}
+                        Tomorrow
+                    {% else %}
+                        Day 3
+                    {% endif %}
+                </h5>
+
+                <p>{{ dag.datum }}</p>
+                <h3>Max: {{ dag.max_temp|temp }}</h3>
+                <p>Min: {{ dag.min_temp|temp }}</p>
+                <p>Precipitation: {{ dag.nederbord }} mm</p>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+
+<!-- Three day forecast -->
+<h2 class="mb-3">Three day forecast</h2>
 
 <table class="table table-striped">
 
@@ -53,10 +90,24 @@
 
 </table>
 
+
+
+<!-- Plotly diagram -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2>Temperature forecast</h2>
+        {{ diagram1 | safe }}
+    </div>
+</div>
+
+
+
 <!-- Back button -->
 <a href="{{ url_for('hello') }}" class="btn btn-secondary">
     Back to homepage
 </a>
+
+
 
 <!-- Visar var väderinformationen kommer ifrån -->
  <p class="text-muted text-center mt-4">

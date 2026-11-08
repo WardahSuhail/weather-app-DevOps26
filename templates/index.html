@@ -4,48 +4,52 @@
 
 {% block content %}
 
-<!-- Rubrik -->
-<h1 class="text-center mb-4">
-    Weather, weather on the wall, where is the warmest of all?
-</h1>
+<div class="container min-vh-100 d-flex flex-column justify-content-center" style="padding-bottom: 100px;">
 
-<!-- Card -->
-<div class="card">
+    <!-- Rubrik -->
+    <h1 class="text-center mb-4">
+        How's the weather today?
+    </h1>
 
-    <div class="card-header">
-        Weather forecast
-    </div>
 
-    <div class="card-body">
+    <!-- Card -->
+    <div class="card mx-auto shadow-sm w-100" style="max-width: 850px;">
 
-        <h5 class="card-title">Choose a city</h5>
+        <div class="card-header">
+            Weather forecast
+        </div>
 
-        <p class="card-text">
-            Select a city to see the weather forecast.
-        </p>
+        <div class="card-body">
 
-        <!-- Form -->
-        <form action="{{ url_for('visa_vader') }}" method="get">
+            <h5 class="card-title">Choose a city</h5>
 
-            <label for="stad" class="form-label">
-                Select city:
-            </label>
+            <p class="card-text">
+                Select a city to see the weather forecast.
+            </p>
 
-            <select name="stad" id="stad" class="form-select mb-3">
+            <!-- Form -->
+            <form action="{{ url_for('visa_vader') }}" method="get">
 
-                {% for stad in stader %}
-                    <option value="{{ stad }}">{{ stad }}</option>
-                {% endfor %}
+                <label for="stad" class="form-label">
+                    Select city:
+                </label>
 
-            </select>
+                <select name="stad" id="stad" class="form-select mb-3">
 
-            <button type="submit" class="btn btn-outline-secondary">
-                Show weather
-            </button>
+                    {% for stad in stader %}
+                        <option value="{{ stad }}">{{ stad }}</option>
+                    {% endfor %}
 
-        </form>
+                </select>
 
-    </div>
-</div>
+                <button type="submit" class="btn btn-outline-secondary">
+                    Show weather
+                </button>
+
+            </form>
+
+        </div>
+</div>    
+
 
 {% endblock %}
